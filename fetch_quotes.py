@@ -1,11 +1,13 @@
 """
-台股報價抓取腳本 —— 在 GitHub Actions 上執行，不在使用者電腦上執行。
+台股報價抓取腳本 v2 —— 在 GitHub Actions 上執行，不在使用者電腦上執行。
+
+v2 改動：觀察清單改從 watchlist.txt 讀取，不再寫死在程式裡。
+        要增減標的只需要改那個文字檔，不會動到程式邏輯。
 
 流程：
   GitHub 伺服器 → 呼叫證交所即時報價 API → 寫成 latest.json → commit 回 repo
 
-只用 Python 標準函式庫（urllib），不需要 pip install 任何套件，
-讓 workflow 跑得更快、也更不容易壞。
+只用 Python 標準函式庫（urllib），不需要 pip install 任何套件。
 """
 
 import json
@@ -16,34 +18,10 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 TW_TZ = timezone(timedelta(hours=8))
+WATCHLIST_FILE = Path("watchlist.txt")
 
-# ── 觀察清單 ──────────────────────────────────────────────
-# 格式："代碼:市場"，市場 tse=上市、otc=上櫃
-# 若某檔抓不到資料，腳本會自動用另一個市場前綴重試一次，所以填錯也會自我修正。
-WATCHLIST = [
-    # 持股
-    "2330:tse",   # 台積電
-    "0050:tse",   # 元大台灣50
-    "2454:tse",   # 聯發科
-    # 大型觀察
-    "2308:tse",   # 台達電
-    "3711:tse",   # 日月光投控
-    "2383:tse",   # 台光電
-    "2345:tse",   # 智邦
-    "3017:tse",   # 奇鋐
-    "2303:tse",   # 聯電
-    "2408:tse",   # 南亞科
-    "2327:tse",   # 國巨
-    # 低價/轉機觀察
-    "1802:tse",   # 台玻
-    "1597:tse",   # 直得
-    "2365:tse",   # 昆盈
-    "2375:tse",   # 凱美
-    "6715:otc",   # 嘉基
-    "6788:otc",   # 華景電
-    "6182:otc",   # 合晶
-    "6173:otc",   # 信昌電
-]
+# 萬一 watchlist.txt 不見了，至少還能抓持股，不會整個掛掉
+FALLBACK = [("2330", "tse"), ("0050", "tse"), ("2454", "tse")]
 
 MIS_URL = "https://mis.twse.com.tw/stock/api/getStockInfo.jsp"
 HEADERS = {
@@ -54,6 +32,42 @@ HEADERS = {
     ),
     "Referer": "https://mis.twse.com.tw/stock/index.jsp",
 }
+
+
+def load_watchlist():
+    """讀取 watchlist.txt，回傳 [(代碼, 市場), ...]。
+
+    容錯設計：忽略空行、註解、行尾註解、多餘空白；
+    重複的代碼只留第一次出現的，順序保持檔案裡的順序。
+    """
+    if not WATCHLIST_FILE.exists():
+        print("[warn] 找不到 watchlist.txt，改用內建預設清單")
+        return FALLBACK
+
+    pairs, seen = [], set()
+    for lineno, raw in enumerate(WATCHLIST_FILE.read_text(encoding="utf-8").splitlines(), 1):
+        line = raw.split("#", 1)[0].strip()      # 砍掉註解
+        if not line:
+            continue
+        code, _, market = line.partition(":")
+        code, market = code.strip(), (market.strip().lower() or "tse")
+        if not code.replace(".", "").isalnum():
+            print(f"[warn] 第 {lineno} 行格式怪怪的，跳過: {raw.strip()!r}")
+            continue
+        if market not in ("tse", "otc"):
+            print(f"[warn] 第 {lineno} 行市場只能是 tse/otc，當成 tse 處理: {raw.strip()!r}")
+            market = "tse"
+        if code in seen:
+            print(f"[info] 第 {lineno} 行 {code} 重複，略過")
+            continue
+        seen.add(code)
+        pairs.append((code, market))
+
+    if not pairs:
+        print("[warn] watchlist.txt 沒有任何有效代碼，改用內建預設清單")
+        return FALLBACK
+    print(f"[info] 從 watchlist.txt 讀入 {len(pairs)} 檔")
+    return pairs
 
 
 def to_float(v):
@@ -76,8 +90,8 @@ def call_mis(pairs):
     try:
         with urllib.request.urlopen(req, timeout=20) as resp:
             return json.loads(resp.read().decode("utf-8")).get("msgArray", [])
-    except (urllib.error.URLError, json.JSONDecodeError, TimeoutError) as e:
-        print(f"[warn] 呼叫失敗 {ex_ch}: {e}")
+    except Exception as e:
+        print(f"[warn] 呼叫失敗: {e}")
         return []
 
 
@@ -122,16 +136,18 @@ def parse_item(item):
 
 
 def main():
-    wanted = []
-    for entry in WATCHLIST:
-        code, _, market = entry.partition(":")
-        wanted.append((code, market or "tse"))
+    wanted = load_watchlist()
 
+    # 檔數多的時候分批送，避免單一請求太長被上游拒絕
     results = {}
-    for item in call_mis(wanted):
-        parsed = parse_item(item)
-        if parsed["code"]:
-            results[parsed["code"]] = parsed
+    BATCH = 25
+    for i in range(0, len(wanted), BATCH):
+        for item in call_mis(wanted[i:i + BATCH]):
+            parsed = parse_item(item)
+            if parsed["code"]:
+                results[parsed["code"]] = parsed
+        if i + BATCH < len(wanted):
+            time.sleep(1)   # 對上游客氣一點
 
     # 自我修正：抓不到的，用另一個市場前綴重試一次
     missing = [(c, "otc" if m == "tse" else "tse") for c, m in wanted if c not in results]
@@ -143,22 +159,26 @@ def main():
                 results[parsed["code"]] = parsed
 
     now = datetime.now(TW_TZ)
+    still_missing = [c for c, _ in wanted if c not in results]
     payload = {
         "queried_at": now.isoformat(),
         "queried_at_tw": now.strftime("%Y-%m-%d %H:%M:%S"),
         "source": "TWSE MIS realtime endpoint",
+        "requested": len(wanted),
         "count": len(results),
-        "missing": [c for c, _ in wanted if c not in results],
+        "missing": still_missing,
         "quotes": [results[c] for c, _ in wanted if c in results],
     }
 
     Path("latest.json").write_text(
         json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    print(f"[ok] 寫入 {len(results)} 檔報價 @ {payload['queried_at_tw']}")
+    print(f"[ok] 寫入 {len(results)}/{len(wanted)} 檔 @ {payload['queried_at_tw']}")
+    if still_missing:
+        print(f"[warn] 這幾檔查無資料，代碼可能有誤或已停止交易: {still_missing}")
 
-    # 收盤後（13:30 以後）順手存一份當日快照，累積歷史供技術分析用
-    if now.hour >= 13 and now.minute >= 35:
+    # 收盤後（13:35 以後）順手存一份當日快照，累積歷史供技術分析用
+    if (now.hour, now.minute) >= (13, 35):
         hist_dir = Path("history")
         hist_dir.mkdir(exist_ok=True)
         (hist_dir / f"{now.strftime('%Y-%m-%d')}.json").write_text(
