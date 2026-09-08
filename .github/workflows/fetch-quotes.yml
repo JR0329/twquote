@@ -1,42 +1,88 @@
 name: 台股報價更新
 
+# ── 設計說明 ──────────────────────────────────────────────
+# 舊版用 */5 每五分鐘觸發一次，一天要成功觸發 66 次。
+# 但 GitHub 排程在高負載時會延遲甚至直接丟棄，而「整點」與
+# 「5 的倍數」正是最壅塞的時段，所以常常整段時間都沒跑。
+#
+# 新版改成：一天只需要成功觸發「一次」，進到 job 之後就在
+# 同一個執行環境裡自己迴圈，每 5 分鐘抓一次直到收盤。
+# 排程只是點火，之後的節奏完全由自己控制。
+# ──────────────────────────────────────────────────────────
+
 on:
   schedule:
-    # cron 用 UTC。台股 09:00-13:30 (UTC+8) = 01:00-05:30 UTC
-    # 前後多抓一點，涵蓋盤前與盤後
-    - cron: '*/5 0-6 * * 1-5'
-  workflow_dispatch:        # 允許在 GitHub 網頁上手動按按鈕執行
+    # UTC 00:52 = 台灣 08:52，開盤前 8 分鐘點火。
+    # 刻意用 52 分這種奇怪的分鐘數，避開所有人擠在一起的整點。
+    - cron: '52 0 * * 1-5'
+    # 保險班：萬一上面那班被丟掉，台灣 11:23 再點一次火。
+    # 若主班還活著，這班會排隊等待，等它輪到時已收盤，
+    # 腳本會判斷出來、抓一次收盤價就結束，不會空轉。
+    - cron: '23 3 * * 1-5'
+  workflow_dispatch:        # 保留手動觸發
 
 permissions:
-  contents: write           # 需要寫入權限才能把結果 commit 回 repo
+  contents: write
 
 concurrency:
   group: fetch-quotes
-  cancel-in-progress: false
+  cancel-in-progress: false   # 不要砍掉正在跑的主班
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    timeout-minutes: 330      # 上限 360，留 30 分鐘餘裕
     steps:
-      - name: 取得程式碼
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: 設定 Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: 抓取報價
-        run: python fetch_quotes.py
-
-      - name: 提交結果
+      - name: 盤中持續抓取
         run: |
+          set -u
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add latest.json history/ 2>/dev/null || git add latest.json
-          if git diff --staged --quiet; then
-            echo "報價無變動，略過 commit"
-          else
-            git commit -m "報價更新 $(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M')"
-            git push
+
+          # 收盤後再多跑 10 分鐘，確保收盤快照一定抓得到
+          END_TS=$(TZ=Asia/Taipei date -d "today 13:40" +%s)
+
+          commit_and_push () {
+            git add -A
+            if git diff --staged --quiet; then
+              echo "  無變動，略過"
+              return
+            fi
+            git commit -q -m "報價更新 $(TZ=Asia/Taipei date '+%m-%d %H:%M')"
+            # 先把別人的變更拉下來（例如你在網頁上改了 watchlist.txt），
+            # 這也讓清單的修改當天就會生效
+            git pull --rebase -q || echo "  pull 失敗，續行"
+            git push -q || echo "  push 失敗，下一輪再試"
+          }
+
+          # 情況一：觸發時已經收盤（保險班排隊排到收盤後才輪到）
+          if [ "$(date +%s)" -ge "$END_TS" ]; then
+            echo "== 已過盤後時間，抓一次收盤價後結束 =="
+            python fetch_quotes.py || echo "抓取失敗"
+            commit_and_push
+            exit 0
           fi
+
+          # 情況二：正常盤中，進入迴圈
+          echo "== 進入盤中迴圈，預計執行到台灣時間 13:40 =="
+          ROUND=0
+          while [ "$(date +%s)" -lt "$END_TS" ]; do
+            ROUND=$((ROUND + 1))
+            echo "--- 第 $ROUND 輪  $(TZ=Asia/Taipei date '+%H:%M:%S') ---"
+            # 單輪失敗不中斷整個 job，下一輪繼續
+            python fetch_quotes.py || echo "  本輪抓取失敗，繼續"
+            commit_and_push
+
+            # 剩不到 5 分鐘就不必再睡，直接收工
+            REMAIN=$((END_TS - $(date +%s)))
+            [ "$REMAIN" -le 300 ] && break
+            sleep 300
+          done
+
+          echo "== 收盤，共執行 $ROUND 輪 =="
