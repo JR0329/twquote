@@ -1,37 +1,41 @@
 name: 台股報價更新
 
-# ── 設計說明 ──────────────────────────────────────────────
-# 舊版用 */5 每五分鐘觸發一次，一天要成功觸發 66 次。
-# 但 GitHub 排程在高負載時會延遲甚至直接丟棄，而「整點」與
-# 「5 的倍數」正是最壅塞的時段，所以常常整段時間都沒跑。
+# ── 設計說明（v4）──────────────────────────────────────────
+# 實測發現：GitHub 對這個 repo 的排程有「約 4.5 小時」的固定延遲，
+# 而且延遲幅度每天高度一致。cron 排幾個時段不影響結果，
+# 每天就是只會實際執行約 2 次。
 #
-# 新版改成：一天只需要成功觸發「一次」，進到 job 之後就在
-# 同一個執行環境裡自己迴圈，每 5 分鐘抓一次直到收盤。
-# 排程只是點火，之後的節奏完全由自己控制。
+# 因此改用「提前下單」策略：把 cron 排在期望開始時間的
+# 4.5 小時之前，讓延遲後剛好對準開盤。
+#
+# 同時加上防呆：萬一哪天延遲消失、job 太早啟動，
+# 等待超過 90 分鐘就直接結束，交給後面的班次接手，
+# 避免從凌晨空轉到撞上 6 小時的 job 上限。
 # ──────────────────────────────────────────────────────────
 
 on:
   schedule:
-    # UTC 00:52 = 台灣 08:52，開盤前 8 分鐘點火。
-    # 刻意用 52 分這種奇怪的分鐘數，避開所有人擠在一起的整點。
+    # 主班：20:15 UTC（週日~週四）→ 延遲 4.5h 後約台灣 08:45，正好開盤前
+    - cron: '15 20 * * 0-4'
+    # 中班：22:00 UTC → 延遲後約台灣 10:30。主班若還在跑會排隊，
+    #       等主班收工後執行，剛好補一張收盤快照
+    - cron: '0 22 * * 0-4'
+    # 末班：00:52 UTC（週一~週五）→ 目前實際會落在台灣 13:20 左右，
+    #       保留當最後防線，至少保證每天抓得到收盤
     - cron: '52 0 * * 1-5'
-    # 保險班：萬一上面那班被丟掉，台灣 11:23 再點一次火。
-    # 若主班還活著，這班會排隊等待，等它輪到時已收盤，
-    # 腳本會判斷出來、抓一次收盤價就結束，不會空轉。
-    - cron: '23 3 * * 1-5'
-  workflow_dispatch:        # 保留手動觸發
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
   group: fetch-quotes
-  cancel-in-progress: false   # 不要砍掉正在跑的主班
+  cancel-in-progress: false
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 330      # 上限 360，留 30 分鐘餘裕
+    timeout-minutes: 330
     steps:
       - uses: actions/checkout@v4
 
@@ -45,8 +49,12 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # 收盤後再多跑 10 分鐘，確保收盤快照一定抓得到
+          BEGIN_TS=$(TZ=Asia/Taipei date -d "today 08:45" +%s)
           END_TS=$(TZ=Asia/Taipei date -d "today 13:40" +%s)
+          NOW_TS=$(date +%s)
+          MAX_WAIT=5400
+
+          echo "啟動時間（台北）: $(TZ=Asia/Taipei date '+%Y-%m-%d %H:%M:%S')"
 
           commit_and_push () {
             git add -A
@@ -55,31 +63,36 @@ jobs:
               return
             fi
             git commit -q -m "報價更新 $(TZ=Asia/Taipei date '+%m-%d %H:%M')"
-            # 先把別人的變更拉下來（例如你在網頁上改了 watchlist.txt），
-            # 這也讓清單的修改當天就會生效
             git pull --rebase -q || echo "  pull 失敗，續行"
             git push -q || echo "  push 失敗，下一輪再試"
           }
 
-          # 情況一：觸發時已經收盤（保險班排隊排到收盤後才輪到）
-          if [ "$(date +%s)" -ge "$END_TS" ]; then
-            echo "== 已過盤後時間，抓一次收盤價後結束 =="
+          if [ "$NOW_TS" -ge "$END_TS" ]; then
+            echo "== 已過盤後時間，單次抓取後結束 =="
             python fetch_quotes.py || echo "抓取失敗"
             commit_and_push
             exit 0
           fi
 
-          # 情況二：正常盤中，進入迴圈
-          echo "== 進入盤中迴圈，預計執行到台灣時間 13:40 =="
+          if [ "$NOW_TS" -lt "$BEGIN_TS" ]; then
+            WAIT=$((BEGIN_TS - NOW_TS))
+            if [ "$WAIT" -gt "$MAX_WAIT" ]; then
+              echo "== 距開盤還有 $((WAIT / 60)) 分鐘，超過等待上限，"
+              echo "   直接結束，交由後續班次接手 =="
+              exit 0
+            fi
+            echo "== 距開盤 $((WAIT / 60)) 分鐘，等待中 =="
+            sleep "$WAIT"
+          fi
+
+          echo "== 進入盤中迴圈，執行到台灣時間 13:40 =="
           ROUND=0
           while [ "$(date +%s)" -lt "$END_TS" ]; do
             ROUND=$((ROUND + 1))
             echo "--- 第 $ROUND 輪  $(TZ=Asia/Taipei date '+%H:%M:%S') ---"
-            # 單輪失敗不中斷整個 job，下一輪繼續
             python fetch_quotes.py || echo "  本輪抓取失敗，繼續"
             commit_and_push
 
-            # 剩不到 5 分鐘就不必再睡，直接收工
             REMAIN=$((END_TS - $(date +%s)))
             [ "$REMAIN" -le 300 ] && break
             sleep 300
