@@ -1,6 +1,6 @@
 {
-  "queried_at": "2026-09-24T13:31:15.882130+08:00",
-  "queried_at_tw": "2026-09-24 13:31:15",
+  "queried_at": "2026-09-25T08:45:04.657649+08:00",
+  "queried_at_tw": "2026-09-25 08:45:04",
   "source": "TWSE MIS realtime endpoint",
   "requested": 28,
   "count": 28,
@@ -79,16 +79,16 @@
     {
       "code": "2383",
       "name": "台光電",
-      "price": 5047.5,
-      "price_source": "bid_ask_mid",
+      "price": 5050.0,
+      "price_source": "trade",
       "prev_close": 5020.0,
       "open": 5025.0,
       "high": 5170.0,
       "low": 4980.0,
-      "change": 27.5,
-      "change_pct": 0.55,
-      "volume": "2051",
-      "quote_time": "13:29:58"
+      "change": 30.0,
+      "change_pct": 0.6,
+      "volume": "2185",
+      "quote_time": "13:30:00"
     },
     {
       "code": "2345",
@@ -219,30 +219,30 @@
     {
       "code": "6715",
       "name": "嘉基",
-      "price": 463.0,
+      "price": 468.5,
       "price_source": "trade",
       "prev_close": 459.5,
       "open": 462.5,
       "high": 472.5,
       "low": 459.0,
-      "change": 3.5,
-      "change_pct": 0.76,
-      "volume": "519",
-      "quote_time": "13:29:55"
+      "change": 9.0,
+      "change_pct": 1.96,
+      "volume": "543",
+      "quote_time": "13:30:00"
     },
     {
       "code": "6788",
       "name": "華景電",
-      "price": 339.5,
-      "price_source": "bid_ask_mid",
+      "price": 339.0,
+      "price_source": "trade",
       "prev_close": 336.0,
       "open": 334.5,
       "high": 340.5,
       "low": 334.5,
-      "change": 3.5,
-      "change_pct": 1.04,
-      "volume": "62",
-      "quote_time": "13:29:15"
+      "change": 3.0,
+      "change_pct": 0.89,
+      "volume": "64",
+      "quote_time": "13:30:00"
     },
     {
       "code": "6182",
@@ -360,15 +360,15 @@
       "code": "3443",
       "name": "創意",
       "price": 8525.0,
-      "price_source": "bid_ask_mid",
+      "price_source": "trade",
       "prev_close": 8385.0,
       "open": 8300.0,
       "high": 8545.0,
       "low": 8205.0,
       "change": 140.0,
       "change_pct": 1.67,
-      "volume": "1299",
-      "quote_time": "13:29:52"
+      "volume": "1373",
+      "quote_time": "13:30:00"
     },
     {
       "code": "3037",
