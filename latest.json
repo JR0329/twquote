@@ -1,6 +1,6 @@
 {
-  "queried_at": "2026-10-08T10:08:08.054329+08:00",
-  "queried_at_tw": "2026-10-08 10:08:08",
+  "queried_at": "2026-10-08T10:13:17.624685+08:00",
+  "queried_at_tw": "2026-10-08 10:13:17",
   "source": "TWSE MIS realtime endpoint",
   "requested": 28,
   "count": 27,
@@ -11,58 +11,58 @@
     {
       "code": "2330",
       "name": "台積電",
-      "price": 2567.5,
+      "price": 2562.5,
       "price_source": "bid_ask_mid",
       "prev_close": 2585.0,
       "open": 2550.0,
       "high": 2575.0,
       "low": 2550.0,
-      "change": -17.5,
-      "change_pct": -0.68,
-      "volume": "7186",
-      "quote_time": "10:07:15"
+      "change": -22.5,
+      "change_pct": -0.87,
+      "volume": "7630",
+      "quote_time": "10:12:05"
     },
     {
       "code": "0050",
       "name": "元大台灣50",
-      "price": 115.32,
+      "price": 115.12,
       "price_source": "bid_ask_mid",
       "prev_close": 116.05,
       "open": 115.35,
       "high": 115.55,
       "low": 114.9,
-      "change": -0.73,
-      "change_pct": -0.63,
-      "volume": "30770",
-      "quote_time": "10:07:49"
+      "change": -0.93,
+      "change_pct": -0.8,
+      "volume": "32971",
+      "quote_time": "10:12:59"
     },
     {
       "code": "2454",
       "name": "聯發科",
-      "price": 4772.5,
+      "price": 4767.5,
       "price_source": "bid_ask_mid",
       "prev_close": 4835.0,
       "open": 4800.0,
       "high": 4850.0,
-      "low": 4770.0,
-      "change": -62.5,
-      "change_pct": -1.29,
-      "volume": "2193",
-      "quote_time": "10:07:36"
+      "low": 4760.0,
+      "change": -67.5,
+      "change_pct": -1.4,
+      "volume": "2350",
+      "quote_time": "10:12:36"
     },
     {
       "code": "2308",
       "name": "台達電",
-      "price": 1967.5,
+      "price": 1962.5,
       "price_source": "bid_ask_mid",
       "prev_close": 1990.0,
       "open": 1980.0,
       "high": 1980.0,
       "low": 1950.0,
-      "change": -22.5,
-      "change_pct": -1.13,
-      "volume": "1750",
-      "quote_time": "10:07:40"
+      "change": -27.5,
+      "change_pct": -1.38,
+      "volume": "1828",
+      "quote_time": "10:12:05"
     },
     {
       "code": "3711",
@@ -75,22 +75,22 @@
       "low": 715.0,
       "change": -7.5,
       "change_pct": -1.02,
-      "volume": "6042",
-      "quote_time": "10:07:47"
+      "volume": "6184",
+      "quote_time": "10:12:05"
     },
     {
       "code": "2383",
       "name": "台光電",
-      "price": 5972.5,
+      "price": 5977.5,
       "price_source": "bid_ask_mid",
       "prev_close": 5950.0,
       "open": 5910.0,
       "high": 6015.0,
       "low": 5745.0,
-      "change": 22.5,
-      "change_pct": 0.38,
-      "volume": "867",
-      "quote_time": "10:07:21"
+      "change": 27.5,
+      "change_pct": 0.46,
+      "volume": "878",
+      "quote_time": "10:12:45"
     },
     {
       "code": "2345",
@@ -99,26 +99,26 @@
       "price_source": "bid_ask_mid",
       "prev_close": 2015.0,
       "open": 1990.0,
-      "high": 2055.0,
+      "high": 2060.0,
       "low": 1970.0,
       "change": 37.5,
       "change_pct": 1.86,
-      "volume": "1455",
-      "quote_time": "10:07:35"
+      "volume": "1582",
+      "quote_time": "10:12:34"
     },
     {
       "code": "3017",
       "name": "奇鋐",
-      "price": 3460.0,
+      "price": 3455.0,
       "price_source": "bid_ask_mid",
       "prev_close": 3545.0,
       "open": 3445.0,
       "high": 3515.0,
       "low": 3410.0,
-      "change": -85.0,
-      "change_pct": -2.4,
-      "volume": "1419",
-      "quote_time": "10:07:41"
+      "change": -90.0,
+      "change_pct": -2.54,
+      "volume": "1451",
+      "quote_time": "10:12:08"
     },
     {
       "code": "2303",
@@ -131,64 +131,64 @@
       "low": 147.0,
       "change": -0.75,
       "change_pct": -0.51,
-      "volume": "31569",
-      "quote_time": "10:07:40"
+      "volume": "32077",
+      "quote_time": "10:12:05"
     },
     {
       "code": "2408",
       "name": "南亞科",
-      "price": 531.5,
+      "price": 529.5,
       "price_source": "bid_ask_mid",
       "prev_close": 514.0,
       "open": 522.0,
       "high": 537.0,
       "low": 522.0,
-      "change": 17.5,
-      "change_pct": 3.4,
-      "volume": "40400",
-      "quote_time": "10:07:26"
+      "change": 15.5,
+      "change_pct": 3.02,
+      "volume": "41055",
+      "quote_time": "10:12:06"
     },
     {
       "code": "2327",
       "name": "國巨*",
-      "price": 634.5,
+      "price": 629.5,
       "price_source": "bid_ask_mid",
       "prev_close": 647.0,
       "open": 640.0,
       "high": 647.0,
       "low": 619.0,
-      "change": -12.5,
-      "change_pct": -1.93,
-      "volume": "27011",
-      "quote_time": "10:07:45"
+      "change": -17.5,
+      "change_pct": -2.7,
+      "volume": "27666",
+      "quote_time": "10:12:55"
     },
     {
       "code": "1802",
       "name": "台玻",
-      "price": 63.85,
+      "price": 63.65,
       "price_source": "bid_ask_mid",
       "prev_close": 65.7,
       "open": 66.0,
       "high": 66.8,
       "low": 62.6,
-      "change": -1.85,
-      "change_pct": -2.82,
-      "volume": "96237",
-      "quote_time": "10:07:20"
+      "change": -2.05,
+      "change_pct": -3.12,
+      "volume": "97860",
+      "quote_time": "10:12:40"
     },
     {
       "code": "1597",
       "name": "直得",
-      "price": 142.75,
+      "price": 142.5,
       "price_source": "bid_ask_mid",
       "prev_close": 145.0,
       "open": 145.0,
       "high": 145.0,
       "low": 141.5,
-      "change": -2.25,
-      "change_pct": -1.55,
-      "volume": "173",
-      "quote_time": "10:07:33"
+      "change": -2.5,
+      "change_pct": -1.72,
+      "volume": "177",
+      "quote_time": "10:12:28"
     },
     {
       "code": "2365",
@@ -201,36 +201,36 @@
       "low": 27.5,
       "change": -0.27,
       "change_pct": -0.97,
-      "volume": "110",
-      "quote_time": "10:06:49"
+      "volume": "113",
+      "quote_time": "10:11:29"
     },
     {
       "code": "2375",
       "name": "凱美",
-      "price": 128.25,
-      "price_source": "bid_ask_mid",
+      "price": 128.0,
+      "price_source": "trade",
       "prev_close": 129.5,
       "open": 129.0,
       "high": 130.5,
       "low": 125.0,
-      "change": -1.25,
-      "change_pct": -0.97,
-      "volume": "1341",
-      "quote_time": "10:07:25"
+      "change": -1.5,
+      "change_pct": -1.16,
+      "volume": "1376",
+      "quote_time": "10:12:00"
     },
     {
       "code": "6715",
       "name": "嘉基",
-      "price": 479.5,
+      "price": 478.25,
       "price_source": "bid_ask_mid",
       "prev_close": 485.0,
       "open": 482.5,
       "high": 495.0,
       "low": 471.0,
-      "change": -5.5,
-      "change_pct": -1.13,
-      "volume": "696",
-      "quote_time": "10:07:03"
+      "change": -6.75,
+      "change_pct": -1.39,
+      "volume": "702",
+      "quote_time": "10:12:28"
     },
     {
       "code": "6788",
@@ -243,36 +243,36 @@
       "low": 364.5,
       "change": -9.25,
       "change_pct": -2.45,
-      "volume": "166",
-      "quote_time": "10:07:41"
+      "volume": "168",
+      "quote_time": "10:11:32"
     },
     {
       "code": "6182",
       "name": "合晶",
-      "price": 128.75,
+      "price": 128.25,
       "price_source": "bid_ask_mid",
       "prev_close": 135.0,
       "open": 132.0,
       "high": 133.0,
       "low": 125.5,
-      "change": -6.25,
-      "change_pct": -4.63,
-      "volume": "39658",
-      "quote_time": "10:07:42"
+      "change": -6.75,
+      "change_pct": -5.0,
+      "volume": "40479",
+      "quote_time": "10:12:07"
     },
     {
       "code": "5474",
       "name": "聰泰",
-      "price": 160.5,
+      "price": 160.75,
       "price_source": "bid_ask_mid",
       "prev_close": 161.0,
       "open": 159.0,
-      "high": 160.5,
+      "high": 161.0,
       "low": 159.0,
-      "change": -0.5,
-      "change_pct": -0.31,
-      "volume": "19",
-      "quote_time": "10:07:38"
+      "change": -0.25,
+      "change_pct": -0.16,
+      "volume": "20",
+      "quote_time": "10:12:46"
     },
     {
       "code": "2911",
@@ -286,21 +286,21 @@
       "change": -0.01,
       "change_pct": -0.17,
       "volume": "23",
-      "quote_time": "10:01:02"
+      "quote_time": "10:10:46"
     },
     {
       "code": "3105",
       "name": "穩懋",
       "price": 578.0,
-      "price_source": "bid_ask_mid",
+      "price_source": "trade",
       "prev_close": 588.0,
       "open": 578.0,
       "high": 592.0,
       "low": 566.0,
       "change": -10.0,
       "change_pct": -1.7,
-      "volume": "7478",
-      "quote_time": "10:07:05"
+      "volume": "7741",
+      "quote_time": "10:12:25"
     },
     {
       "code": "2317",
@@ -313,50 +313,50 @@
       "low": 250.0,
       "change": -1.75,
       "change_pct": -0.69,
-      "volume": "10837",
-      "quote_time": "10:07:50"
+      "volume": "11064",
+      "quote_time": "10:12:09"
     },
     {
       "code": "2382",
       "name": "廣達",
-      "price": 325.25,
-      "price_source": "bid_ask_mid",
+      "price": 325.5,
+      "price_source": "trade",
       "prev_close": 335.0,
       "open": 328.0,
       "high": 328.5,
       "low": 321.0,
-      "change": -9.75,
-      "change_pct": -2.91,
-      "volume": "7994",
-      "quote_time": "10:07:51"
+      "change": -9.5,
+      "change_pct": -2.84,
+      "volume": "8067",
+      "quote_time": "10:12:06"
     },
     {
       "code": "3008",
       "name": "大立光",
-      "price": 6807.5,
+      "price": 6805.0,
       "price_source": "bid_ask_mid",
       "prev_close": 6845.0,
       "open": 6805.0,
       "high": 6930.0,
       "low": 6705.0,
-      "change": -37.5,
-      "change_pct": -0.55,
-      "volume": "778",
-      "quote_time": "10:07:20"
+      "change": -40.0,
+      "change_pct": -0.58,
+      "volume": "791",
+      "quote_time": "10:13:03"
     },
     {
       "code": "3443",
       "name": "創意",
-      "price": 8450.0,
+      "price": 8457.5,
       "price_source": "bid_ask_mid",
       "prev_close": 8460.0,
       "open": 8550.0,
       "high": 8600.0,
       "low": 8375.0,
-      "change": -10.0,
-      "change_pct": -0.12,
-      "volume": "578",
-      "quote_time": "10:07:51"
+      "change": -2.5,
+      "change_pct": -0.03,
+      "volume": "604",
+      "quote_time": "10:12:52"
     },
     {
       "code": "3037",
@@ -369,8 +369,8 @@
       "low": 1255.0,
       "change": -37.5,
       "change_pct": -2.87,
-      "volume": "3393",
-      "quote_time": "10:07:55"
+      "volume": "3457",
+      "quote_time": "10:12:46"
     },
     {
       "code": "6669",
@@ -383,8 +383,8 @@
       "low": 2200.0,
       "change": -17.5,
       "change_pct": -0.78,
-      "volume": "655",
-      "quote_time": "10:07:07"
+      "volume": "668",
+      "quote_time": "10:12:05"
     }
   ]
 }
