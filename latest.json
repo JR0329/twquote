@@ -1,6 +1,6 @@
 {
-  "queried_at": "2026-11-24T13:06:23.952668+08:00",
-  "queried_at_tw": "2026-11-24 13:06:23",
+  "queried_at": "2026-11-24T13:11:31.211178+08:00",
+  "queried_at_tw": "2026-11-24 13:11:31",
   "source": "TWSE MIS realtime endpoint",
   "script_version": 3,
   "requested": 28,
@@ -18,8 +18,8 @@
       "low": 2230.0,
       "change": 200.0,
       "change_pct": 9.85,
-      "volume": "10449",
-      "quote_time": "13:05:59",
+      "volume": "10488",
+      "quote_time": "13:10:54",
       "trade_date": "20261124"
     },
     {
@@ -33,8 +33,8 @@
       "low": 95.7,
       "change": 8.7,
       "change_pct": 10.0,
-      "volume": "51283",
-      "quote_time": "13:06:04",
+      "volume": "51745",
+      "quote_time": "13:10:24",
       "trade_date": "20261124"
     },
     {
@@ -48,8 +48,8 @@
       "low": 4050.0,
       "change": 365.0,
       "change_pct": 9.91,
-      "volume": "1060",
-      "quote_time": "13:05:57",
+      "volume": "1065",
+      "quote_time": "13:10:04",
       "trade_date": "20261124"
     },
     {
@@ -64,7 +64,7 @@
       "change": 95.0,
       "change_pct": 9.6,
       "volume": "931",
-      "quote_time": "13:05:59",
+      "quote_time": "13:10:07",
       "trade_date": "20261124"
     },
     {
@@ -78,23 +78,23 @@
       "low": 530.0,
       "change": 48.0,
       "change_pct": 9.96,
-      "volume": "6496",
-      "quote_time": "13:05:53",
+      "volume": "6498",
+      "quote_time": "13:10:25",
       "trade_date": "20261124"
     },
     {
       "code": "2383",
       "name": "台光電",
       "price": 3395.0,
-      "price_source": "limit_up_locked",
+      "price_source": "trade",
       "prev_close": 3090.0,
       "open": 3395.0,
       "high": 3395.0,
       "low": 3395.0,
       "change": 305.0,
       "change_pct": 9.87,
-      "volume": "105",
-      "quote_time": "13:05:08",
+      "volume": "106",
+      "quote_time": "13:11:04",
       "trade_date": "20261124"
     },
     {
@@ -109,7 +109,7 @@
       "change": 135.0,
       "change_pct": 10.0,
       "volume": "423",
-      "quote_time": "13:06:00",
+      "quote_time": "13:10:16",
       "trade_date": "20261124"
     },
     {
@@ -124,7 +124,7 @@
       "change": 235.0,
       "change_pct": 9.94,
       "volume": "273",
-      "quote_time": "13:06:00",
+      "quote_time": "13:10:10",
       "trade_date": "20261124"
     },
     {
@@ -138,8 +138,8 @@
       "low": 97.1,
       "change": 8.8,
       "change_pct": 9.97,
-      "volume": "39683",
-      "quote_time": "13:06:05",
+      "volume": "39697",
+      "quote_time": "13:10:20",
       "trade_date": "20261124"
     },
     {
@@ -153,23 +153,23 @@
       "low": 309.0,
       "change": 28.0,
       "change_pct": 9.96,
-      "volume": "2986",
-      "quote_time": "13:06:00",
+      "volume": "2995",
+      "quote_time": "13:10:16",
       "trade_date": "20261124"
     },
     {
       "code": "2327",
       "name": "國巨*",
       "price": 341.0,
-      "price_source": "limit_up_locked",
+      "price_source": "trade",
       "prev_close": 310.0,
       "open": 341.0,
       "high": 341.0,
       "low": 341.0,
       "change": 31.0,
       "change_pct": 10.0,
-      "volume": "2390",
-      "quote_time": "13:06:03",
+      "volume": "2395",
+      "quote_time": "13:10:24",
       "trade_date": "20261124"
     },
     {
@@ -183,8 +183,8 @@
       "low": 63.9,
       "change": 5.8,
       "change_pct": 9.98,
-      "volume": "7043",
-      "quote_time": "13:05:52",
+      "volume": "7108",
+      "quote_time": "13:11:07",
       "trade_date": "20261124"
     },
     {
@@ -229,7 +229,7 @@
       "change": 7.5,
       "change_pct": 9.97,
       "volume": "183",
-      "quote_time": "13:05:55",
+      "quote_time": "13:10:01",
       "trade_date": "20261124"
     },
     {
@@ -274,7 +274,7 @@
       "change": 5.8,
       "change_pct": 9.97,
       "volume": "1241",
-      "quote_time": "13:05:52",
+      "quote_time": "13:09:52",
       "trade_date": "20261124"
     },
     {
@@ -288,8 +288,8 @@
       "low": 151.0,
       "change": 13.5,
       "change_pct": 9.82,
-      "volume": "193",
-      "quote_time": "13:05:55",
+      "volume": "194",
+      "quote_time": "13:10:09",
       "trade_date": "20261124"
     },
     {
@@ -319,7 +319,7 @@
       "change": 0.2,
       "change_pct": 4.26,
       "volume": "172",
-      "quote_time": "13:05:19",
+      "quote_time": "13:10:08",
       "trade_date": "20261124"
     },
     {
@@ -333,23 +333,23 @@
       "low": 449.0,
       "change": 40.5,
       "change_pct": 9.91,
-      "volume": "1118",
-      "quote_time": "13:06:06",
+      "volume": "1122",
+      "quote_time": "13:10:28",
       "trade_date": "20261124"
     },
     {
       "code": "2317",
       "name": "鴻海",
       "price": 226.5,
-      "price_source": "trade",
+      "price_source": "limit_up_locked",
       "prev_close": 206.0,
       "open": 226.5,
       "high": 226.5,
       "low": 226.5,
       "change": 20.5,
       "change_pct": 9.95,
-      "volume": "18215",
-      "quote_time": "13:06:03",
+      "volume": "18266",
+      "quote_time": "13:10:19",
       "trade_date": "20261124"
     },
     {
@@ -363,8 +363,8 @@
       "low": 276.0,
       "change": 25.5,
       "change_pct": 9.92,
-      "volume": "23269",
-      "quote_time": "13:05:59",
+      "volume": "23432",
+      "quote_time": "13:10:25",
       "trade_date": "20261124"
     },
     {
@@ -379,7 +379,7 @@
       "change": 360.0,
       "change_pct": 9.94,
       "volume": "81",
-      "quote_time": "13:06:00",
+      "quote_time": "13:11:19",
       "trade_date": "20261124"
     },
     {
@@ -393,8 +393,8 @@
       "low": 5630.0,
       "change": 510.0,
       "change_pct": 9.96,
-      "volume": "118",
-      "quote_time": "13:05:54",
+      "volume": "119",
+      "quote_time": "13:10:22",
       "trade_date": "20261124"
     },
     {
@@ -408,8 +408,8 @@
       "low": 613.0,
       "change": 55.0,
       "change_pct": 9.86,
-      "volume": "1014",
-      "quote_time": "13:06:01",
+      "volume": "1018",
+      "quote_time": "13:10:39",
       "trade_date": "20261124"
     },
     {
@@ -423,8 +423,8 @@
       "low": 1510.0,
       "change": 135.0,
       "change_pct": 9.82,
-      "volume": "702",
-      "quote_time": "13:05:32",
+      "volume": "703",
+      "quote_time": "13:10:52",
       "trade_date": "20261124"
     }
   ]
